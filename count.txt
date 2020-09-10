@@ -1,0 +1,81 @@
+Sub UnhideAllSheets()
+    Dim ws As Worksheet
+    For Each ws In ActiveWorkbook.Worksheets
+        ws.Visible = xlSheetVisible
+    Next ws
+End Sub
+
+Sub DeleteHiddenSheets()
+Dim Ws As Worksheet
+With Application
+  .DisplayAlerts = False
+  For Each Ws In Worksheets
+    If Ws.Visible = xlVeryHidden Then Ws.Visible = Hidden
+    If Not Ws.Visible Then Ws.Delete
+  Next Ws
+  .DisplayAlerts = True
+End With
+End Sub
+
+Sub Count_Shapes()
+Dim counter As Long
+Dim ws As Worksheet
+For Each ws In ActiveWorkbook.Worksheets
+counter = ActiveSheet.Shapes.Count
+Next
+MsgBox ("So luong Shapes la: " & counter)
+End Sub
+
+Sub Count_Pics()
+Dim counter As Long
+Dim ws As Worksheet
+For Each ws In ActiveWorkbook.Worksheets
+counter = ActiveSheet.Pictures.Count
+Next
+MsgBox ("So luong Pictures la: " & counter)
+End Sub
+
+Sub Count_ChartObjects()
+Dim counter As Long
+Dim ws As Worksheet
+For Each ws In ActiveWorkbook.Worksheets
+counter = ActiveSheet.ChartObjects.Count
+Next
+MsgBox ("So luong ChartObjects la: " & counter)
+End Sub
+
+Sub ShowEachShape()
+Dim sObject As Shape
+For Each sObject In ActiveSheet.Shapes
+sObject.Visible = True
+Next
+End Sub
+
+Sub DeleteAllPics()
+Dim Pic As Object
+For Each Pic In ActiveSheet.Pictures
+Pic.Delete
+Next Pic
+End Sub
+
+Sub DeleteAllShapes()
+Dim Pic As Object
+For Each sh In ActiveSheet.Shapes
+sh.Delete
+Next sh
+End Sub
+
+
+Sub GotoSheet()
+    Dim sSheet As String
+
+    sSheet = InputBox( _
+      Prompt:="Sheet name or number?", _
+      Title:="Input Sheet")
+    On Error Resume Next
+    If Val(sSheet) > 0 Then
+        Worksheets(Val(sSheet)).Activate
+    Else
+        Worksheets(sSheet).Activate
+    End If
+End Sub

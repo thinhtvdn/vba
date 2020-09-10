@@ -1,0 +1,18 @@
+'Code Created by Sumit Bansal from trumpexcel.com
+' split the worksheets and save these as PDF files
+'https://trumpexcel.com/split-each-excel-sheet-into-separate-files/
+Sub SplitEachWorksheet()
+Dim FPath As String
+FPath = Application.ActiveWorkbook.Path
+Application.ScreenUpdating = False
+Application.DisplayAlerts = False
+
+For Each ws In ThisWorkbook.Sheets
+    ws.Copy
+    Application.ActiveSheet.ExportAsFixedFormat Type:=xlTypePDF, Filename:=FPath & "\" & ws.Name & ".xlsx"
+    Application.ActiveWorkbook.Close False
+Next
+
+Application.DisplayAlerts = True
+Application.ScreenUpdating = True
+End Sub
