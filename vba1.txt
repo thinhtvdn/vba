@@ -1,0 +1,29 @@
+public Sub DeleteAllPics()
+Dim shape As Excel.shape
+For Each shape In ActiveSheet.Shapes
+        shape.Delete
+Next
+End Sub
+
+public Sub DeleteAllPics2()
+ActiveSheet.Shapes.SelectAll
+Selection.Delete
+End Sub
+
+Public Sub CountPics()
+Dim i As Long
+i = ActiveSheet.Shapes.Count
+MsgBox i
+End Sub
+
+Sub Remove_PicturesCount()
+For i = 33 To 34
+    ActiveSheet.Pictures(i).Delete
+Next
+End Sub
+
+Sub Remove_shapeCount()
+For i = 1 To 10000
+    ActiveSheet.Shapes(i).Delete
+Next
+End Sub

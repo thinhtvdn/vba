@@ -1,0 +1,84 @@
+Sub DeleteHiddenSheets()
+Dim ws As Worksheet
+With Application
+  .DisplayAlerts = False
+  For Each ws In Worksheets
+    If ws.Visible = xlVeryHidden Then ws.Visible = Hidden
+    If Not ws.Visible Then ws.Delete
+  Next ws
+  .DisplayAlerts = True
+End With
+End Sub
+
+Sub DeleteAllPics()
+Dim Pic As Object
+For Each Pic In ActiveSheet.Pictures
+Pic.Delete
+Next Pic
+End Sub
+
+Sub DeleteAllShapes()
+Dim Pic As Object
+For Each sh In ActiveSheet.Shapes
+sh.Delete
+Next sh
+End Sub
+
+
+Sub t()
+Call DeleteAllShapes
+Call DeleteAllPics
+Call DeleteHiddenSheets
+
+End Sub
+
+
+Sub WorksheetSizes()
+    Dim wks As Worksheet
+    Dim c As Range
+    Dim sFullFile As String
+    Dim sReport As String
+    Dim sWBName As String
+
+    sReport = "Size Report"
+    sWBName = "Erase Me.xls"
+    sFullFile = ThisWorkbook.Path & _
+      Application.PathSeparator & sWBName
+
+    ' Add new worksheet to record sizes
+    On Error Resume Next
+    Set wks = Worksheets(sReport)
+    If wks Is Nothing Then
+        With ThisWorkbook.Worksheets.Add(Before:=Worksheets(1))
+            .Name = sReport
+            .Range("A1").Value = "Worksheet Name"
+            .Range("B1").Value = "Approximate Size"
+        End With
+    End If
+    On Error GoTo 0
+    With ThisWorkbook.Worksheets(sReport)
+        .Select
+        .Range("A1").CurrentRegion.Offset(1, 0).ClearContents
+        Set c = .Range("A2")
+    End With
+
+    Application.ScreenUpdating = False
+    ' Loop through worksheets
+    For Each wks In ActiveWorkbook.Worksheets
+        If wks.Name <> sReport Then
+            wks.Copy
+            Application.DisplayAlerts = False
+            ActiveWorkbook.SaveAs sFullFile
+            ActiveWorkbook.Close SaveChanges:=False
+            Application.DisplayAlerts = True
+            c.Offset(0, 0).Value = wks.Name
+            c.Offset(0, 1).Value = FileLen(sFullFile)
+            Set c = c.Offset(1, 0)
+            Kill sFullFile
+        End If
+    Next wks
+    Application.ScreenUpdating = True
+End Sub
+
+
+
